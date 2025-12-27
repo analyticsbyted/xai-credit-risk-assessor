@@ -13,7 +13,7 @@ iniconfig
 joblib
 llvmlite
 numba
-numpy>=1.24.0
+numpy>=1.24.0,<2.0.0
 packaging
 pandas>=2.0.0
 pluggy
@@ -35,4 +35,4 @@ typing-inspection
 typing_extensions
 tzdata
 uvicorn>=0.20.0
-xgboost>=2.0.0
+xgboost>=2.0.0,<3.0.0
