@@ -1,5 +1,5 @@
 # Stage 1: Build the Frontend
-FROM node:18-alpine AS frontend-builder
+FROM node:18-slim AS frontend-builder
 WORKDIR /app/client
 # Copy package files
 COPY client/package*.json ./
