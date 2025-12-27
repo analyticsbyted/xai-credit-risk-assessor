@@ -37,7 +37,8 @@ def train():
 
     print("Generating SHAP explainer...")
     # Using TreeExplainer for XGBoost
-    explainer = shap.TreeExplainer(model)
+    # Pass model.get_booster() to avoid Scikit-Learn wrapper metadata parsing issues in SHAP
+    explainer = shap.TreeExplainer(model.get_booster())
 
     # Ensure artifacts directory exists
     os.makedirs(ARTIFACTS_DIR, exist_ok=True)
