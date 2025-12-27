@@ -1,3 +1,13 @@
+---
+title: XAI Credit Risk Assessor
+emoji: 🏦
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+app_port: 7860
+---
+
 # Explainable AI (XAI) Credit Risk Assessor
 
 A full-stack web application that predicts loan default risk using XGBoost and explains the decision using SHAP (SHapley Additive exPlanations).
