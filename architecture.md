@@ -4,63 +4,65 @@ This document outlines the high-level architecture of the application.
 
 ## System Overview
 
-The application follows a decoupled client-server architecture:
+The application follows a **Self-Contained Full-Stack Architecture** optimized for containerized deployment (e.g., Hugging Face Spaces, AWS App Runner).
 
 1.  **Frontend (Client):**
-    *   **Technology:** Next.js (React), Tailwind CSS.
-    *   **Hosting:** AWS S3 + CloudFront (Static Website Hosting).
+    *   **Technology:** Next.js 16 (React), Tailwind CSS.
+    *   **Build Mode:** Static Export (`output: 'export'`).
+    *   **Serving:** Served as static HTML/JS/CSS files directly from the FastAPI backend.
     *   **Responsibilities:** 
         *   Renders the user interface.
-        *   Collects applicant data via a form.
-        *   Sends requests to the Backend API.
-        *   Visualizes the response (Prediction & SHAP values) using Recharts.
+        *   Collects applicant data.
+        *   Interactive "What-If" Simulation (Client-side state + API polling).
 
 2.  **Backend (API):**
-    *   **Technology:** Python (FastAPI), Uvicorn.
-    *   **Hosting:** Docker Container (AWS App Runner / ECS).
+    *   **Technology:** Python 3.10 (FastAPI), Uvicorn.
     *   **Responsibilities:**
-        *   Loads pre-trained Machine Learning models (XGBoost, SHAP Explainer) into memory at startup.
-        *   Validates incoming request data using Pydantic.
-        *   Performs data preprocessing (alignment with model features).
-        *   Executes model inference (Prediction) and explanation (SHAP).
-        *   Returns JSON response.
+        *   **Static File Serving:** Serves the built frontend assets at `/`.
+        *   **Model Inference:** `/predict` endpoint.
+        *   **Lifespan Management:** Loads XGBoost model and SHAP explainer into memory on startup.
 
 3.  **Data & Model Pipeline:**
-    *   **Technology:** Jupyter Notebooks, Pandas, Scikit-Learn, XGBoost, SHAP.
+    *   **Technology:** XGBoost, SHAP, Pandas.
     *   **Workflow:**
-        *   Data Ingestion (CSV).
-        *   Preprocessing (One-Hot Encoding, Handling Missing Values).
-        *   Model Training (XGBoost).
-        *   Explainer Generation (TreeExplainer).
-        *   Artifact Serialization (`.pkl` files) to be consumed by the API.
+        *   **Synthetic Data Generation:** Uses a Logistic Function (Sigmoid) with calibrated weights to simulate realistic credit risk (market base rate ~1%).
+        *   **Training:** Model is trained *during the container build process* to ensure binary compatibility between the training environment and inference environment.
 
-## Diagram
+## Deployment Diagram (Hugging Face / Docker)
 
 ```mermaid
-graph LR
-    User[User Browser] -- HTTPS --> CloudFront[AWS CloudFront]
-    CloudFront -- Serves Static Assets --> S3[AWS S3 Bucket (Frontend)]
-    User -- JSON/API Calls --> API[FastAPI Backend (AWS App Runner)]
+graph TD
+    User[User Browser] -- HTTPS --> HF[Hugging Face Space / Docker Container]
     
-    subgraph Backend Container
-        API -- Load --> Model[XGBoost Model]
-        API -- Load --> Explainer[SHAP Explainer]
+    subgraph "Docker Container (Single Process)"
+        FastAPI[FastAPI Server]
+        Static[Static Frontend Assets (Next.js Build)]
+        Model[XGBoost Model (In-Memory)]
+        Explainer[SHAP Explainer (In-Memory)]
+        
+        FastAPI -- Serves --> Static
+        FastAPI -- Uses --> Model
+        FastAPI -- Uses --> Explainer
     end
     
-    subgraph Offline Training
-        RawData[(CSV Data)] --> Notebook[Jupyter Notebook]
-        Notebook --> Model
-        Notebook --> Explainer
-    end
+    User -- GET / --> FastAPI
+    User -- POST /predict --> FastAPI
 ```
 
-## Data Flow
+## Data Flow (Prediction)
 
-1.  User submits form data (Age, Income, etc.).
-2.  Frontend constructs JSON payload and POSTs to `/predict`.
-3.  Backend receives payload, converts to DataFrame.
-4.  Backend ensures columns match training features (filling missing, reordering).
-5.  Model predicts default probability.
-6.  Explainer calculates feature contributions (SHAP values).
-7.  Backend responds with Prediction ("Approved"/"Denied") and Explanation.
-8.  Frontend renders "Approved" (Green) or "Denied" (Red) and displays Bar Chart of top contributing features.
+1.  User submits form data.
+2.  Frontend maps categorical strings (e.g., "Married") to One-Hot Integers (e.g., `marital_status_married: 1`).
+3.  Frontend POSTs JSON to `/predict`.
+4.  Backend aligns features with training schema.
+5.  XGBoost predicts probability.
+6.  SHAP calculates feature contributions.
+7.  Backend returns JSON response.
+
+## Data Flow (Simulation)
+
+1.  User drags a slider (e.g., Income).
+2.  Frontend updates local state.
+3.  Debounced API call to `/predict?include_explanation=false`.
+4.  Backend skips SHAP calculation (for speed) and returns only the new probability.
+5.  Frontend updates the "Simulated Risk" gauge.
