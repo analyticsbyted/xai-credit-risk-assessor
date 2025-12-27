@@ -25,6 +25,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend code
 COPY api/ ./api/
 
+# Copy scripts and data for training
+COPY scripts/ ./scripts/
+COPY data/ ./data/
+
+# Run Data Generation and Training (Ensures compatibility)
+# We set the python path so scripts can find modules if needed
+ENV PYTHONPATH=/app
+RUN python scripts/generate_synthetic_data.py
+RUN python scripts/train_model.py
+
 # Copy built frontend assets from Stage 1 to api/static
 COPY --from=frontend-builder /app/client/out ./api/static
 
@@ -32,5 +42,4 @@ COPY --from=frontend-builder /app/client/out ./api/static
 EXPOSE 7860
 
 # Run command
-# We point to api.main:app, and listen on 0.0.0.0:7860
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "7860"]
