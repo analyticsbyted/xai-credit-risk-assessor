@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Next.js
+.next/
+out/
+
+# VS Code
+.vscode/
+
+# Mac
+.DS_Store
+
+# Data
+# We KEEP the raw CSV for the repo demo, usually we ignore data/
+# data/raw/
+
+# Model Artifacts (We KEEP these for the demo so users don't have to train first)
+# api/model_artifacts/
