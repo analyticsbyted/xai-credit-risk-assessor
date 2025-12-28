@@ -25,7 +25,8 @@ This project demonstrates the integration of advanced machine learning interpret
 *   **Explainability:** Provides real-time explanations for every prediction using SHAP (SHapley Additive exPlanations) values.
 *   **"What-If" Analysis:** Interactive Simulation Mode allowing users to adjust key financial metrics (Income, DTI, Credit Score) and see the impact on their risk in real-time.
 *   **Visualizations:** Interactive bar charts showing positive/negative feature contributions.
-*   **Modern Stack:** React (Next.js 16) frontend and Python (FastAPI) backend.
+*   **Premium UI/UX:** A state-of-the-art interface featuring **Glassmorphism**, smooth entrance animations, and a fully adaptive **Premium Dark Theme** for optimal visual comfort.
+*   **Modern Stack:** React (Next.js 15+) frontend and Python (FastAPI) backend.
 
 ## Repository Structure
 

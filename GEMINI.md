@@ -19,7 +19,7 @@ The application follows a standard client-server architecture:
 
 ## Intended Development Workflow & Commands
 
-**Note:** This project is currently in the setup phase. The following commands are standard conventions for this stack and are expected to be implemented.
+**Note:** The core product and infrastructure setup are complete. The project is now in the **refinement and enhancement phase**, focusing on UI/UX polish, theme consistency, and advanced interactive features.
 
 ### Prerequisites
 *   Node.js & npm
