@@ -26,6 +26,6 @@ describe('ShapChart', () => {
 
   it('displays the chart title', () => {
     render(<ShapChart features={mockData} />);
-    expect(screen.getByText(/Feature Contribution/i)).toBeInTheDocument();
+    expect(screen.getByText(/Feature Impact/i)).toBeInTheDocument();
   });
 });

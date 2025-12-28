@@ -24,7 +24,7 @@ describe('CreditRiskForm', () => {
     const incomeInput = screen.getByLabelText(/Income/i);
     fireEvent.change(incomeInput, { target: { value: '50000' } });
     
-    const submitButton = screen.getByRole('button', { name: /Assess Risk/i });
+    const submitButton = screen.getByRole('button', { name: /Generate Risk Assessment/i });
     fireEvent.click(submitButton);
     
     expect(handleSubmit).toHaveBeenCalledTimes(1);
