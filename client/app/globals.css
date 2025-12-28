@@ -88,31 +88,41 @@ body {
 /* Custom Form Elements Polish */
 @layer base {
 
-  /* Remove default spin buttons for a cleaner look, or style them if possible */
+  /* Enhanced Number Input Spinners */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
+    height: 1.5rem;
     cursor: pointer;
-    /* In dark mode, Chrome/Safari defaults can be ugly, so we'll ensure they are tinted */
-    filter: invert(var(--dark-mode-invert, 0));
+    margin-right: 4px;
+    padding: 2px;
   }
 
-  .dark {
-    --dark-mode-invert: 0.8;
+  /* Force high contrast for spinners in dark mode */
+  .dark input[type="number"]::-webkit-inner-spin-button {
+    filter: invert(1) brightness(1.5) contrast(1.2);
   }
 
   /* Custom Select Arrow for Premium Feel */
   select {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234F46E5' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
-    background-size: 1.2em;
-    padding-right: 2.5rem !important;
+    background-size: 1em;
+    padding-right: 3rem !important;
+    transition: all 0.2s ease;
   }
 
   .dark select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366F1' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+  }
+
+  /* Input Focus Enhancements */
+  input:focus,
+  select:focus {
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary);
+    border-color: transparent !important;
   }
 
   /* Fix for browser autofill background */
