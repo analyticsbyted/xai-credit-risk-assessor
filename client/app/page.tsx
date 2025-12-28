@@ -27,11 +27,11 @@ export default function Home() {
     setError(null);
     setResult(null);
     setCurrentData(data); // Store RAW data for the UI/Sliders
-    
+
     try {
       // Transform data for API
       const apiPayload = mapFormToApiPayload(data);
-      
+
       // Use relative path for deployment
       const response = await axios.post('/predict', apiPayload);
       setResult(response.data);
@@ -44,67 +44,97 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
-            XAI Credit Risk Assessor
+    <main className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto space-y-12">
+        <div className="text-center space-y-4 animate-in">
+          <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-7xl tracking-tight">
+            XAI <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Credit Risk</span> Assessor
           </h1>
-          <p className="mt-5 max-w-xl mx-auto text-xl text-gray-500">
-            Explainable AI-powered loan default prediction.
+          <p className="max-w-xl mx-auto text-xl text-muted-foreground">
+            Leverage Game-Theoretic Explainability for High-Stakes Loan Decision Support.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 gap-12">
           {/* Form Section */}
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Applicant Information</h2>
+          <div className="animate-in" style={{ animationDelay: '0.1s' }}>
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-1 h-8 bg-primary rounded-full" />
+              <h2 className="text-2xl font-bold text-foreground">Applicant Risk Profile</h2>
+            </div>
             <CreditRiskForm onSubmit={handleAssessment} />
           </div>
 
           {/* Loading State */}
           {loading && (
-            <div className="text-center py-10">
-              <p className="text-xl text-indigo-600">Analyzing Risk Model...</p>
+            <div className="text-center py-10 animate-pulse">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status" />
+              <p className="mt-4 text-xl font-medium text-primary">Analyzing Model Weights...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="bg-red-50 border-l-4 border-red-400 p-4">
-              <div className="flex">
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
+            <div className="bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 p-4 rounded-xl animate-in">
+              <div className="flex items-center gap-3">
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+                <p className="text-sm font-medium">{error}</p>
               </div>
             </div>
           )}
 
           {/* Results Section */}
           {result && (
-            <div className="bg-white shadow rounded-lg p-6 space-y-6 animate-fade-in">
-              <div className="border-b pb-4">
-                <h2 className="text-3xl font-bold text-gray-900">
-                  Prediction: <span className={result.prediction === 'Denied' ? 'text-red-600' : 'text-green-600'}>{result.prediction}</span>
-                </h2>
-                <p className="mt-1 text-gray-500">
-                  Default Probability: {(result.probability * 100).toFixed(2)}%
-                </p>
+            <div className="glass-card rounded-2xl p-8 space-y-8 animate-in" style={{ animationDelay: '0.2s' }}>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-border pb-8">
+                <div>
+                  <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">Prediction Outcome</div>
+                  <h2 className="text-4xl font-black tracking-tight">
+                    <span className={result.prediction === 'Denied' ? 'text-red-500' : 'text-emerald-500'}>
+                      {result.prediction.toUpperCase()}
+                    </span>
+                  </h2>
+                </div>
+                <div className="bg-background/50 border border-border rounded-2xl p-4 min-w-[200px]">
+                  <div className="text-xs font-bold text-muted-foreground uppercase mb-1">Risk Weighted Probability</div>
+                  <div className="text-3xl font-mono font-bold tracking-tighter">
+                    {(result.probability * 100).toFixed(2)}%
+                  </div>
+                  <div className="mt-2 w-full bg-border rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-1000 ${result.prediction === 'Denied' ? 'bg-red-500' : 'bg-emerald-500'}`}
+                      style={{ width: `${result.probability * 100}%` }}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800">Explanation</h3>
-                <p className="mt-2 text-gray-600 text-lg">{result.explanation.summary}</p>
-              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-1 gap-12">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    Narrative Summary
+                  </h3>
+                  <div className="bg-muted/30 border border-border p-6 rounded-xl leading-relaxed text-foreground/90 italic quote">
+                    "{result.explanation.summary}"
+                  </div>
+                </div>
 
-              <div>
-                <ShapChart features={result.explanation.feature_importance} />
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold flex items-center gap-2">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                    Game-Theoretic Feature Attribution (TreeSHAP)
+                  </h3>
+                  <ShapChart features={result.explanation.feature_importance} />
+                </div>
               </div>
 
               {/* Simulation Panel */}
-              <SimulationPanel 
-                initialData={currentData} 
-                baseProbability={result.probability} 
+              <SimulationPanel
+                initialData={currentData}
+                baseProbability={result.probability}
               />
             </div>
           )}

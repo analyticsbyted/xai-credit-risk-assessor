@@ -39,8 +39,8 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'education' || name === 'employment_type' || name === 'marital_status' 
-        ? value 
+      [name]: name === 'education' || name === 'employment_type' || name === 'marital_status'
+        ? value
         : parseFloat(value) || 0
     }));
   };
@@ -50,52 +50,52 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
-  const inputClass = "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-black p-2 border";
-  const labelClass = "block text-sm font-medium text-gray-700";
+  const inputClass = "mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground shadow-sm focus:border-primary focus:ring-primary sm:text-sm outline-none transition-all placeholder:text-muted-foreground focus:ring-1";
+  const labelClass = "block text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-1";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-4 bg-white shadow rounded-lg">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+    <form onSubmit={handleSubmit} className="glass-card p-8 rounded-2xl space-y-8 border border-border">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-1">
           <label htmlFor="age" className={labelClass}>Age</label>
           <input type="number" name="age" id="age" value={formData.age} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
-          <label htmlFor="income" className={labelClass}>Income ($)</label>
+        <div className="space-y-1">
+          <label htmlFor="income" className={labelClass}>Annual Income ($)</label>
           <input type="number" name="income" id="income" value={formData.income} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="loan_amount" className={labelClass}>Loan Amount ($)</label>
           <input type="number" name="loan_amount" id="loan_amount" value={formData.loan_amount} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="credit_score" className={labelClass}>Credit Score</label>
           <input type="number" name="credit_score" id="credit_score" value={formData.credit_score} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="months_employed" className={labelClass}>Months Employed</label>
           <input type="number" name="months_employed" id="months_employed" value={formData.months_employed} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
-          <label htmlFor="num_credit_lines" className={labelClass}>Num Credit Lines</label>
+        <div className="space-y-1">
+          <label htmlFor="num_credit_lines" className={labelClass}>Active Credit Lines</label>
           <input type="number" name="num_credit_lines" id="num_credit_lines" value={formData.num_credit_lines} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="interest_rate" className={labelClass}>Interest Rate (%)</label>
           <input type="number" name="interest_rate" id="interest_rate" value={formData.interest_rate} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="loan_term" className={labelClass}>Loan Term (Months)</label>
           <input type="number" name="loan_term" id="loan_term" value={formData.loan_term} onChange={handleChange} className={inputClass} />
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="dti_ratio" className={labelClass}>DTI Ratio</label>
           <input type="number" step="0.01" name="dti_ratio" id="dti_ratio" value={formData.dti_ratio} onChange={handleChange} className={inputClass} />
         </div>
-        
+
         {/* Selects */}
-        <div>
-          <label htmlFor="education" className={labelClass}>Education</label>
+        <div className="space-y-1">
+          <label htmlFor="education" className={labelClass}>Education Level</label>
           <select name="education" id="education" value={formData.education} onChange={handleChange} className={inputClass}>
             <option value="HighSchool">High School</option>
             <option value="Bachelor">Bachelor</option>
@@ -103,7 +103,7 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
             <option value="PhD">PhD</option>
           </select>
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="employment_type" className={labelClass}>Employment Type</label>
           <select name="employment_type" id="employment_type" value={formData.employment_type} onChange={handleChange} className={inputClass}>
             <option value="FullTime">Full Time</option>
@@ -112,7 +112,7 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
             <option value="Unemployed">Unemployed</option>
           </select>
         </div>
-        <div>
+        <div className="space-y-1">
           <label htmlFor="marital_status" className={labelClass}>Marital Status</label>
           <select name="marital_status" id="marital_status" value={formData.marital_status} onChange={handleChange} className={inputClass}>
             <option value="Single">Single</option>
@@ -122,9 +122,12 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
         </div>
       </div>
 
-      <div className="pt-4">
-        <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Assess Risk
+      <div className="pt-6 border-t border-border">
+        <button
+          type="submit"
+          className="w-full flex justify-center py-4 px-6 rounded-xl shadow-lg text-lg font-bold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all active:scale-[0.98] transform"
+        >
+          Generate Risk Assessment
         </button>
       </div>
     </form>
