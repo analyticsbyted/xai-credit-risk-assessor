@@ -63,7 +63,7 @@ body {
   .glass {
     @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800/20 shadow-xl;
   }
-  
+
   .glass-card {
     @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-800/50 shadow-lg;
   }
@@ -77,9 +77,50 @@ body {
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
     }
+  }
+}
+
+/* Custom Form Elements Polish */
+@layer base {
+
+  /* Remove default spin buttons for a cleaner look, or style them if possible */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+    cursor: pointer;
+    /* In dark mode, Chrome/Safari defaults can be ugly, so we'll ensure they are tinted */
+    filter: invert(var(--dark-mode-invert, 0));
+  }
+
+  .dark {
+    --dark-mode-invert: 0.8;
+  }
+
+  /* Custom Select Arrow for Premium Feel */
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.2em;
+    padding-right: 2.5rem !important;
+  }
+
+  .dark select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' %3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+  }
+
+  /* Fix for browser autofill background */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--foreground);
+    -webkit-box-shadow: 0 0 0px 1000px var(--background) inset;
+    transition: background-color 5000s ease-in-out 0s;
   }
 }
