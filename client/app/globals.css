@@ -88,39 +88,23 @@ body {
 /* Custom Form Elements Polish */
 @layer base {
 
-  /* Premium Numeric Input Controls */
+  /* Restore Native Numeric Input Controls */
   input[type="number"] {
-    position: relative;
-    /* Ensure there is enough padding for the native controls */
-    padding-right: 0.5rem !important;
+    appearance: number-input;
+    -webkit-appearance: number-input;
   }
 
-  /* Make the spin buttons more visible */
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: inner-spin-button !important;
     opacity: 1 !important;
-    cursor: pointer;
-    /* Basic sizing */
-    height: 32px;
-    width: 20px;
-    /* Minimal styling to avoid breaking visibility */
-    background: transparent;
+    display: block !important;
   }
 
-  /* Apply high contrast to the arrows in dark mode */
-  .dark input[type="number"]::-webkit-inner-spin-button {
+  /* Just invert them in dark mode for visibility */
+  .dark input[type="number"]::-webkit-inner-spin-button,
+  .dark input[type="number"]::-webkit-outer-spin-button {
     filter: invert(1) brightness(2);
-  }
-
-  /* Firefox Specifics */
-  input[type="number"] {
-    -moz-appearance: textfield;
-  }
-
-  input[type="number"]:hover,
-  input[type="number"]:focus {
-    -moz-appearance: number-input;
   }
 
   /* Custom Select Arrow for Premium Feel */
