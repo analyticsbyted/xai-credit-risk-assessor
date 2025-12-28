@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD): Explainable AI (XAI) Credit Risk Assessor
 
-**Version:** 1.1 (Refined)
-**Date:** 2025-12-26
+**Version:** 1.2 (Final Release)
+**Date:** 2025-12-27
 **Author:** Ted Dickey II
 
 ---
@@ -58,7 +58,7 @@ This project serves as a portfolio piece to showcase expertise in end-to-end pro
     *   **Frontend:** The Next.js/React frontend must be built as a **static site** (`npm run build`). The resulting static assets must be deployed to **AWS S3** and served via **CloudFront**.
     *   **Backend:** The FastAPI backend can be containerized (Docker) and deployed to a service like AWS App Runner, ECS, or a similar platform.
 *   **NFR4: Performance:** The web application must have a Google Lighthouse performance score of 90+ on desktop.
-*   **NFR5: Responsiveness:** The UI must be fully responsive and functional on mobile, tablet, and desktop screens.
+*   **NFR5: Responsiveness (Mobile-First):** The UI must be fully responsive, prioritizing mobile layouts (stacked columns, large touch targets) before expanding to desktop grids. Numeric inputs must use correct `inputMode` for mobile keyboards.
 *   **NFR6: Virtual Environment:** For all Python development (backend, model training), a Python virtual environment (e.g., `venv`) must be created and utilized to manage project dependencies in isolation. This ensures reproducibility and avoids conflicts with system-wide Python installations.
 
 ## 6. Success Metrics

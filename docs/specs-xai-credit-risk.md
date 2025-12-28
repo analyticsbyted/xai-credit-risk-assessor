@@ -1,7 +1,7 @@
 # Technical Specifications: Explainable AI (XAI) Credit Risk Assessor
 
-**Version:** 1.1 (Refined)
-**Date:** 2025-12-26
+**Version:** 1.2 (Final Release)
+**Date:** 2025-12-27
 **Related PRD:** [PRD: XAI Credit Risk Assessor](./prd-xai-credit-risk.md)
 
 ---
@@ -20,9 +20,9 @@ The system will be composed of three main parts:
 
 *   **Frontend:**
     *   **Framework:** Next.js (preferred for static export and API routes) or Vite + React
-    *   **UI Library:** Tailwind CSS
+    *   **UI Library:** Tailwind CSS (Mobile-First Configuration)
     *   **Data Fetching:** `fetch` API or `SWR`
-    *   **Charts:** `recharts` or `nivo` for the SHAP bar chart
+    *   **Charts:** `recharts` (Responsive Container)
     *   **Testing:** `vitest` or `jest` with `react-testing-library`
 *   **Backend:**
     *   **Python Environment:** Use a Python virtual environment (e.g., `venv`) for dependency management.
@@ -31,8 +31,8 @@ The system will be composed of three main parts:
     *   **Data Handling:** `pandas`, `numpy`
     *   **Testing:** `pytest`
 *   **Deployment:**
-    *   **Frontend:** AWS S3 (for static hosting) + AWS CloudFront (for CDN and HTTPS)
-    *   **Backend:** Docker container deployed to AWS App Runner or ECS.
+    *   **Hugging Face Spaces:** Docker SDK (Single container serving both Frontend & Backend).
+    *   **Alternative:** AWS S3 + CloudFront (Frontend) and AWS App Runner (Backend).
 
 ## 3. Data Model & Preprocessing
 
@@ -124,6 +124,10 @@ A JSON object matching the preprocessed features of the model.
     *   Renders sliders for the Top 3 continuous features (e.g., Income, Credit Score, DTI).
     *   Debounced API calls to `/predict?include_explanation=false` as sliders move.
     *   Updates a "Simulated Probability" gauge/text.
+*   **[NEW] Mobile-First UI:**
+    *   **Inputs:** `inputMode="numeric"` for mobile keyboards.
+    *   **Charts:** Dynamic height (500px on mobile vs 384px on desktop) to accommodate vertical Bar Charts without label clipping.
+    *   **Layout:** Flex-col (stacked) by default, Grid on `md` breakpoints.
 
 ## 6. Deployment Workflow (per NFR3)
 
