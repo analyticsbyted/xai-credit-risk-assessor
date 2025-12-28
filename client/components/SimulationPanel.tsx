@@ -73,7 +73,7 @@ const SimulationPanel: React.FC<SimulationPanelProps> = ({ initialData, baseProb
           </div>
         </div>
 
-        <div className="text-right bg-background/50 backdrop-blur-sm p-4 rounded-xl border border-border min-w-[200px]">
+        <div className="w-full md:w-auto text-right bg-background/50 backdrop-blur-sm p-4 rounded-xl border border-border min-w-[200px]">
           <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1">Simulated Risk</div>
           <div className={`text-3xl font-black ${loading ? 'opacity-30' : ''} transition-opacity duration-200`}>
             {simProbability !== null ? (simProbability * 100).toFixed(1) : (baseProbability * 100).toFixed(1)}%

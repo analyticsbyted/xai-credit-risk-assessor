@@ -50,47 +50,47 @@ const CreditRiskForm: React.FC<CreditRiskFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
-  const inputClass = "mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground shadow-sm focus:border-primary focus:ring-primary sm:text-sm outline-none transition-all placeholder:text-muted-foreground focus:ring-1";
+  const inputClass = "mt-1 block w-full rounded-xl border border-border bg-background px-4 py-3 text-base shadow-sm focus:border-primary focus:ring-primary outline-none transition-all placeholder:text-muted-foreground focus:ring-1"; // text-base (16px) prevents iOS zoom
   const labelClass = "block text-sm font-semibold text-muted-foreground uppercase tracking-widest mb-1";
 
   return (
-    <form onSubmit={handleSubmit} className="glass-card p-8 rounded-2xl space-y-8 border border-border">
+    <form onSubmit={handleSubmit} className="glass-card p-6 md:p-8 rounded-2xl space-y-8 border border-border">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="space-y-1">
           <label htmlFor="age" className={labelClass}>Age</label>
-          <input type="number" name="age" id="age" value={formData.age} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="numeric" name="age" id="age" value={formData.age} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="income" className={labelClass}>Annual Income ($)</label>
-          <input type="number" name="income" id="income" value={formData.income} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="decimal" name="income" id="income" value={formData.income} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="loan_amount" className={labelClass}>Loan Amount ($)</label>
-          <input type="number" name="loan_amount" id="loan_amount" value={formData.loan_amount} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="decimal" name="loan_amount" id="loan_amount" value={formData.loan_amount} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="credit_score" className={labelClass}>Credit Score</label>
-          <input type="number" name="credit_score" id="credit_score" value={formData.credit_score} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="numeric" name="credit_score" id="credit_score" value={formData.credit_score} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="months_employed" className={labelClass}>Months Employed</label>
-          <input type="number" name="months_employed" id="months_employed" value={formData.months_employed} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="numeric" name="months_employed" id="months_employed" value={formData.months_employed} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="num_credit_lines" className={labelClass}>Active Credit Lines</label>
-          <input type="number" name="num_credit_lines" id="num_credit_lines" value={formData.num_credit_lines} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="numeric" name="num_credit_lines" id="num_credit_lines" value={formData.num_credit_lines} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="interest_rate" className={labelClass}>Interest Rate (%)</label>
-          <input type="number" name="interest_rate" id="interest_rate" value={formData.interest_rate} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="decimal" name="interest_rate" id="interest_rate" value={formData.interest_rate} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="loan_term" className={labelClass}>Loan Term (Months)</label>
-          <input type="number" name="loan_term" id="loan_term" value={formData.loan_term} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="numeric" name="loan_term" id="loan_term" value={formData.loan_term} onChange={handleChange} className={inputClass} />
         </div>
         <div className="space-y-1">
           <label htmlFor="dti_ratio" className={labelClass}>DTI Ratio</label>
-          <input type="number" step="0.01" name="dti_ratio" id="dti_ratio" value={formData.dti_ratio} onChange={handleChange} className={inputClass} />
+          <input type="number" inputMode="decimal" step="0.01" name="dti_ratio" id="dti_ratio" value={formData.dti_ratio} onChange={handleChange} className={inputClass} />
         </div>
 
         {/* Selects */}
