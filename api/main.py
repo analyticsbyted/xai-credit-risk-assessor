@@ -4,36 +4,25 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
-import joblib
 import pandas as pd
 import numpy as np
 import os
+from api.services.model_service import ModelService
 
 # Define Paths
 BASE_DIR = os.path.dirname(__file__)
 ARTIFACTS_DIR = os.path.join(BASE_DIR, "model_artifacts")
-STATIC_DIR = os.path.join(BASE_DIR, "static") # New static directory
-
-MODEL_PATH = os.path.join(ARTIFACTS_DIR, "model.pkl")
-EXPLAINER_PATH = os.path.join(ARTIFACTS_DIR, "explainer.pkl")
-FEATURE_NAMES_PATH = os.path.join(ARTIFACTS_DIR, "feature_names.pkl")
-
-# Global variables for artifacts
-ml_models = {}
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load models
+    # Load models via Service
     try:
-        print("Loading model artifacts...")
-        ml_models["model"] = joblib.load(MODEL_PATH)
-        ml_models["explainer"] = joblib.load(EXPLAINER_PATH)
-        ml_models["feature_names"] = joblib.load(FEATURE_NAMES_PATH)
-        print("Model artifacts loaded successfully.")
+        ModelService.get_instance().load_artifacts(ARTIFACTS_DIR)
     except Exception as e:
         print(f"Error loading models: {e}")
     yield
-    ml_models.clear()
+    # No explicit cleanup needed for joblib models usually, but could be added to service
 
 app = FastAPI(lifespan=lifespan)
 
@@ -70,14 +59,15 @@ class LoanApplication(BaseModel):
 
 @app.post("/predict")
 def predict_credit_risk(application: LoanApplication, include_explanation: bool = True):
-    if "model" not in ml_models:
+    service = ModelService.get_instance()
+    if not service.is_loaded():
         raise HTTPException(status_code=503, detail="Model not loaded")
     
     # Convert input to DataFrame
     input_data = application.model_dump()
     df = pd.DataFrame([input_data])
     
-    feature_names = ml_models["feature_names"]
+    feature_names = service.get_feature_names()
     
     # 1. Add missing columns with 0
     for col in feature_names:
@@ -88,7 +78,7 @@ def predict_credit_risk(application: LoanApplication, include_explanation: bool 
     df = df[feature_names]
     
     # Predict
-    model = ml_models["model"]
+    model = service.get_model()
     prediction_cls = model.predict(df)[0]
     probabilities = model.predict_proba(df)[0]
     
@@ -97,7 +87,7 @@ def predict_credit_risk(application: LoanApplication, include_explanation: bool 
     
     explanation_data = None
     if include_explanation:
-        explainer = ml_models["explainer"]
+        explainer = service.get_explainer()
         shap_values = explainer(df)
         
         impacts = []
@@ -124,9 +114,5 @@ def predict_credit_risk(application: LoanApplication, include_explanation: bool 
     }
 
 # Serve Static Files (Frontend)
-# We mount / to static, but we need to handle the index.html fallback for SPA
 if os.path.exists(STATIC_DIR):
     app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
-
-# If we were using client-side routing that didn't map to files, we'd need a catch-all
-# But since Next.js 'export' generates .html files for routes, StaticFiles(html=True) handles most.
