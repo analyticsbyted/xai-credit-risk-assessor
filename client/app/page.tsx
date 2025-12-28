@@ -140,6 +140,27 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      <footer className="mt-20 py-10 border-t border-border/50 text-center animate-in" style={{ animationDelay: '0.4s' }}>
+        <div className="max-w-4xl mx-auto px-4">
+          <p className="text-muted-foreground text-sm font-medium tracking-wide">
+            &copy; {new Date().getFullYear()} <span className="text-foreground font-bold">Ted Dickey II</span>. All rights reserved.
+          </p>
+          <div className="mt-4">
+            <a
+              href="https://teddickey.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary hover:bg-primary/10 transition-all duration-300 group"
+            >
+              <span className="font-bold text-sm">Portfolio</span>
+              <svg className="w-4 h-4 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
